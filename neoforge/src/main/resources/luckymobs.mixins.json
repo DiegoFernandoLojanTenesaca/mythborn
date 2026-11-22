@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.lautish.luckymobs.init.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "MobMixin",
+    "CommandsMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
