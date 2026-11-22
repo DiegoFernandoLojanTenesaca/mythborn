@@ -4,6 +4,7 @@ import com.lautish.luckymobs.init.ModConfig;
 import com.lautish.luckymobs.util.LuckyTier;
 import com.lautish.luckymobs.util.LuckyTiers;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -50,5 +51,10 @@ public abstract class LivingEntityMixin {
     @ModifyVariable(method = "hurtServer", at = @At("HEAD"), argsOnly = true)
     private float multiplyDamage(float dmg, ServerLevel level, DamageSource source) {
         return (float) (dmg * LuckyTiers.damageMultiplier(source.getEntity()));
+    }
+
+    @Inject(method = "hurtServer", at = @At("HEAD"), cancellable = true)
+    private void titanFalls(ServerLevel level, DamageSource source, float dmg, CallbackInfoReturnable<Boolean> cir) {
+        if (source.is(DamageTypeTags.IS_FALL) && LuckyTiers.tierOf((LivingEntity) (Object) this) == LuckyTier.TITAN) cir.setReturnValue(false);
     }
 }

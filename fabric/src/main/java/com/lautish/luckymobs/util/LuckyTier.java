@@ -7,6 +7,8 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.storage.loot.LootTable;
 import org.jspecify.annotations.Nullable;
 
+import java.util.Locale;
+
 import static com.lautish.luckymobs.LuckyMobsMod.MODID;
 
 public enum LuckyTier {
@@ -113,11 +115,11 @@ public enum LuckyTier {
     }
 
     public ResourceKey<LootTable> bonusTable() {
-        return ResourceKey.create(Registries.LOOT_TABLE, Identifier.fromNamespaceAndPath(MODID, "entities/" + name().toLowerCase() + "_bonus"));
+        return ResourceKey.create(Registries.LOOT_TABLE, Identifier.fromNamespaceAndPath(MODID, "entities/" + name().toLowerCase(Locale.ROOT) + "_bonus"));
     }
 
     public Identifier modifierId(String effect) {
-        return Identifier.fromNamespaceAndPath(MODID, name().toLowerCase() + "_" + effect);
+        return Identifier.fromNamespaceAndPath(MODID, name().toLowerCase(Locale.ROOT) + "_" + effect);
     }
 
     public LuckyStyle style() {

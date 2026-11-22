@@ -21,6 +21,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.Locale;
+
 @Mixin(Commands.class)
 public abstract class CommandsMixin {
 
@@ -32,7 +34,7 @@ public abstract class CommandsMixin {
     private void registerLucky(Commands.CommandSelection selection, CommandBuildContext context, CallbackInfo ci) {
         var targets = Commands.argument("targets", EntityArgument.entities()).executes(c -> give(c, LuckyTier.LUCKY));
         for (LuckyTier tier : LuckyTier.values()) {
-            targets.then(Commands.literal(tier.name().toLowerCase()).executes(c -> give(c, tier)));
+            targets.then(Commands.literal(tier.name().toLowerCase(Locale.ROOT)).executes(c -> give(c, tier)));
         }
         LiteralArgumentBuilder<CommandSourceStack> root = Commands.literal("lucky").requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS));
         dispatcher.register(root.then(targets));

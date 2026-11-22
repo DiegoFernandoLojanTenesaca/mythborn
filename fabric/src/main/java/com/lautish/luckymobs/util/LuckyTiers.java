@@ -20,6 +20,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.CollisionGetter;
+import net.minecraft.world.level.ServerLevelAccessor;
 import org.jspecify.annotations.Nullable;
 
 import java.util.List;
@@ -108,6 +109,13 @@ public class LuckyTiers {
             if (chance > 0 && random.nextInt(chance) == 0) return tier;
         }
         return null;
+    }
+
+    public static void rollAndApply(Mob mob, EntitySpawnReason reason, ServerLevelAccessor level) {
+        if (!eligible(mob)) return;
+        LuckyTier tier = roll(mob, reason, level.getRandom());
+        while (tier != null && !fits(mob, tier.size(), level)) tier = tier.lower();
+        if (tier != null) apply(mob, tier);
     }
 
     public static boolean fits(Mob mob, double size) {

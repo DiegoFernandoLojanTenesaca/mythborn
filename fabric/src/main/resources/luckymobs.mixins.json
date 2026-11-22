@@ -6,7 +6,12 @@
   "mixins": [
     "MobMixin",
     "LivingEntityMixin",
-    "CommandsMixin"
+    "CommandsMixin",
+    "CreeperMixin",
+    "AnimalMixin",
+    "SheepMixin",
+    "ChickenMixin",
+    "CubeMobMixin"
   ],
   "injectors": {
     "defaultRequire": 1
