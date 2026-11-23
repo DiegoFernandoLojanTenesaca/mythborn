@@ -11,7 +11,10 @@
     "AnimalMixin",
     "SheepMixin",
     "ChickenMixin",
-    "CubeMobMixin"
+    "CubeMobMixin",
+    "ServerLevelMixin",
+    "TamableAnimalMixin",
+    "AbstractHorseMixin"
   ],
   "injectors": {
     "defaultRequire": 1

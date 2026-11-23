@@ -1,0 +1,24 @@
+{
+  "values": [
+    {
+      "id": "critterarmory:copper_chicken_armor",
+      "required": false
+    },
+    {
+      "id": "critterarmory:golden_chicken_armor",
+      "required": false
+    },
+    {
+      "id": "critterarmory:iron_chicken_armor",
+      "required": false
+    },
+    {
+      "id": "critterarmory:diamond_chicken_armor",
+      "required": false
+    },
+    {
+      "id": "critterarmory:netherite_chicken_armor",
+      "required": false
+    }
+  ]
+}

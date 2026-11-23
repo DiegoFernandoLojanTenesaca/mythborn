@@ -1,0 +1,24 @@
+{
+  "values": [
+    {
+      "id": "critterarmory:copper_cat_armor",
+      "required": false
+    },
+    {
+      "id": "critterarmory:golden_cat_armor",
+      "required": false
+    },
+    {
+      "id": "critterarmory:iron_cat_armor",
+      "required": false
+    },
+    {
+      "id": "critterarmory:diamond_cat_armor",
+      "required": false
+    },
+    {
+      "id": "critterarmory:netherite_cat_armor",
+      "required": false
+    }
+  ]
+}

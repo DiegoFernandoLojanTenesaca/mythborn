@@ -55,6 +55,8 @@ public class LuckyTiers {
             multiply(mob, Attributes.JUMP_STRENGTH, tier, "mount_jump", tier.mountJump());
         }
         mob.setHealth(mob.getMaxHealth());
+        LuckyCombat.addGoals(mob, tier);
+        LuckyCombat.armor(mob, tier);
     }
 
     private static void multiply(Mob mob, Holder<Attribute> attribute, LuckyTier tier, String effect, double factor) {

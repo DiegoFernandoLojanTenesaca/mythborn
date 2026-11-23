@@ -1,0 +1,24 @@
+{
+  "values": [
+    {
+      "id": "critterarmory:copper_pig_armor",
+      "required": false
+    },
+    {
+      "id": "critterarmory:golden_pig_armor",
+      "required": false
+    },
+    {
+      "id": "critterarmory:iron_pig_armor",
+      "required": false
+    },
+    {
+      "id": "critterarmory:diamond_pig_armor",
+      "required": false
+    },
+    {
+      "id": "critterarmory:netherite_pig_armor",
+      "required": false
+    }
+  ]
+}

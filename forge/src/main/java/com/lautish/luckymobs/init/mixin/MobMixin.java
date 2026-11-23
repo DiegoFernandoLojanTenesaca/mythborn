@@ -1,5 +1,6 @@
 package com.lautish.luckymobs.init.mixin;
 
+import com.lautish.luckymobs.util.LuckyCombat;
 import com.lautish.luckymobs.util.LuckyTier;
 import com.lautish.luckymobs.util.LuckyTiers;
 import net.minecraft.world.DifficultyInstance;
@@ -11,10 +12,12 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.monster.cubemob.AbstractCubeMob;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.storage.ValueInput;
 import org.jspecify.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Mob.class)
@@ -24,6 +27,12 @@ public abstract class MobMixin {
     private void rollTier(ServerLevelAccessor level, DifficultyInstance difficulty, EntitySpawnReason reason, @Nullable SpawnGroupData groupData, CallbackInfoReturnable<SpawnGroupData> cir) {
         Mob mob = (Mob) (Object) this;
         if (!(mob instanceof AbstractCubeMob)) LuckyTiers.rollAndApply(mob, reason, level);
+    }
+
+    @Inject(method = "readAdditionalSaveData", at = @At("RETURN"))
+    private void restoreGoals(ValueInput input, CallbackInfo ci) {
+        Mob mob = (Mob) (Object) this;
+        LuckyCombat.addGoals(mob, LuckyTiers.tierOf(mob));
     }
 
     @Inject(method = "isSunBurnTick", at = @At("HEAD"), cancellable = true)

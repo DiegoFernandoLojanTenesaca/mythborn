@@ -1,0 +1,24 @@
+{
+  "values": [
+    {
+      "id": "critterarmory:copper_cow_armor",
+      "required": false
+    },
+    {
+      "id": "critterarmory:golden_cow_armor",
+      "required": false
+    },
+    {
+      "id": "critterarmory:iron_cow_armor",
+      "required": false
+    },
+    {
+      "id": "critterarmory:diamond_cow_armor",
+      "required": false
+    },
+    {
+      "id": "critterarmory:netherite_cow_armor",
+      "required": false
+    }
+  ]
+}

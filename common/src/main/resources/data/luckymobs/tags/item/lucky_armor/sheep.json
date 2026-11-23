@@ -1,0 +1,24 @@
+{
+  "values": [
+    {
+      "id": "critterarmory:copper_sheep_armor",
+      "required": false
+    },
+    {
+      "id": "critterarmory:golden_sheep_armor",
+      "required": false
+    },
+    {
+      "id": "critterarmory:iron_sheep_armor",
+      "required": false
+    },
+    {
+      "id": "critterarmory:diamond_sheep_armor",
+      "required": false
+    },
+    {
+      "id": "critterarmory:netherite_sheep_armor",
+      "required": false
+    }
+  ]
+}

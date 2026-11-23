@@ -1,0 +1,25 @@
+{
+  "values": [
+    "minecraft:wolf_armor",
+    {
+      "id": "critterarmory:copper_wolf_armor",
+      "required": false
+    },
+    {
+      "id": "critterarmory:golden_wolf_armor",
+      "required": false
+    },
+    {
+      "id": "critterarmory:iron_wolf_armor",
+      "required": false
+    },
+    {
+      "id": "critterarmory:diamond_wolf_armor",
+      "required": false
+    },
+    {
+      "id": "critterarmory:netherite_wolf_armor",
+      "required": false
+    }
+  ]
+}
