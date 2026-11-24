@@ -1,1 +1,1 @@
-- Added lucky, alpha and titan mobs with the /lucky command
+- Initial release
