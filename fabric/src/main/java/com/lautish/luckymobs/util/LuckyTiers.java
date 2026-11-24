@@ -26,8 +26,8 @@ import java.util.List;
 public class LuckyTiers {
     private static final LuckyTier[] ROLL_ORDER = {LuckyTier.TITAN, LuckyTier.ALPHA, LuckyTier.LUCKY};
 
-    private static final String[] EFFECTS = {"health", "speed", "knockback", "mount_speed", "mount_jump"};
-    private static final List<Holder<Attribute>> ATTRIBUTES = List.of(Attributes.MAX_HEALTH, Attributes.MOVEMENT_SPEED, Attributes.KNOCKBACK_RESISTANCE, Attributes.JUMP_STRENGTH);
+    private static final String[] EFFECTS = {"health", "speed", "knockback", "mount_speed", "mount_jump", "mount_fall"};
+    private static final List<Holder<Attribute>> ATTRIBUTES = List.of(Attributes.MAX_HEALTH, Attributes.MOVEMENT_SPEED, Attributes.KNOCKBACK_RESISTANCE, Attributes.JUMP_STRENGTH, Attributes.SAFE_FALL_DISTANCE);
 
     public static @Nullable LuckyTier tierOf(Entity entity) {
         if (!(entity instanceof LivingEntity e)) return null;
@@ -52,6 +52,7 @@ public class LuckyTiers {
         if (mob.is(ModTags.EntityTypes.LUCKY_MOUNTS)) {
             multiply(mob, Attributes.MOVEMENT_SPEED, tier, "mount_speed", tier.mountSpeed());
             multiply(mob, Attributes.JUMP_STRENGTH, tier, "mount_jump", tier.mountJump());
+            multiply(mob, Attributes.SAFE_FALL_DISTANCE, tier, "mount_fall", tier.mountJump() * tier.mountJump());
         }
         mob.setHealth(mob.getMaxHealth());
         LuckyCombat.addGoals(mob, tier);
