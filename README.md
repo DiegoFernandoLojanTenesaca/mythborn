@@ -6,8 +6,8 @@ Rare lucky, alpha and titan mobs: bigger, glowing, tougher and full of loot
 
 - Lucky, alpha and titan mobs: any mob can spawn with a level, bigger and wrapped in sparkles, a colored veil and its own light
 - More loot and more experience at every level, plus extra items from datapack loot tables
-- Hostile lucky, alpha and titan mobs have more health, damage and speed, and titans show a boss bar
-- Alpha and titan wild animals charge, kick and stomp nearby players; tamed ones defend their owner
+- Hostile lucky, alpha and titan mobs have more health and damage, lucky and alpha ones also more speed, and titans show a boss bar
+- Alpha and titan wild animals charge and kick nearby players, and titans also stomp; tamed ones defend their owner
 - Lucky, alpha and titan mounts run faster and jump higher without hurting their rider; titans take no fall damage
 - Alpha and titan mobs can spawn wearing body armor, vanilla or from Critter Armory, and it can drop when they die
 - Babies can inherit luck from their parents
