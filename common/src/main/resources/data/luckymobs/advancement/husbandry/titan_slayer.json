@@ -5,10 +5,12 @@
       "id": "minecraft:netherite_sword"
     },
     "title": {
-      "translate": "advancements.luckymobs.titan_slayer.title"
+      "translate": "advancements.luckymobs.titan_slayer.title",
+      "fallback": "Titan Slayer"
     },
     "description": {
-      "translate": "advancements.luckymobs.titan_slayer.description"
+      "translate": "advancements.luckymobs.titan_slayer.description",
+      "fallback": "Kill a titan"
     },
     "frame": "goal",
     "show_toast": true,
