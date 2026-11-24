@@ -12,7 +12,9 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.OwnableEntity;
 import net.minecraft.world.entity.TamableAnimal;
@@ -33,7 +35,7 @@ public class LuckyCombat {
     public static final int RETALIATE_COOLDOWN = 200;
 
     public static void addGoals(Mob mob, @Nullable LuckyTier tier) {
-        if (!(mob instanceof Animal) || (tier != LuckyTier.ALPHA && tier != LuckyTier.TITAN)) return;
+        if (!passiveKind(mob) || (tier != LuckyTier.ALPHA && tier != LuckyTier.TITAN)) return;
         if (mob.getGoalSelector().getAvailableGoals().stream().anyMatch(w -> w.getGoal() instanceof PickGoal)) return;
         mob.removeAllGoals(g -> g instanceof PanicGoal);
         mob.getGoalSelector().addGoal(0, new PickGoal(mob));
@@ -42,15 +44,25 @@ public class LuckyCombat {
         mob.getGoalSelector().addGoal(2, new ChargeGoal(mob));
     }
 
+    public static boolean passiveKind(Mob mob) {
+        return mob instanceof Animal && !(mob instanceof Enemy) && mob.getType().getCategory() != MobCategory.MONSTER;
+    }
+
     public static boolean active(Mob mob) {
         LuckyTier tier = LuckyTiers.tierOf(mob);
-        return ModConfig.aggressiveAnimals && (tier == LuckyTier.ALPHA || tier == LuckyTier.TITAN) && !mob.isBaby()
+        return passiveKind(mob) && ModConfig.aggressiveAnimals && (tier == LuckyTier.ALPHA || tier == LuckyTier.TITAN) && !mob.isBaby()
                 && mob.level().getDifficulty() != Difficulty.PEACEFUL;
     }
 
     public static boolean canTarget(Mob mob, @Nullable LivingEntity target) {
-        if (target == null || !target.isAlive() || target == mob || target == ownerOf(mob)) return false;
+        if (target == null || !target.isAlive() || target == mob || target == ownerOf(mob) || target.getVehicle() == mob) return false;
         return !(target instanceof Player player) || (!player.isCreative() && !player.isSpectator());
+    }
+
+    public static boolean canStomp(Mob mob, LivingEntity e) {
+        if (!canTarget(mob, e) || !mob.hasLineOfSight(e)) return false;
+        if (tamed(mob)) return e == mob.getTarget() || e instanceof Enemy;
+        return e instanceof Player || e == mob.getTarget();
     }
 
     public static @Nullable LivingEntity ownerOf(Mob mob) {
@@ -80,9 +92,9 @@ public class LuckyCombat {
     public static boolean retaliate(Mob mob, DamageSource source, ServerLevel level) {
         LuckyTier tier = LuckyTiers.tierOf(mob);
         LivingEntity owner = ownerOf(mob);
-        if (owner == null || source.getEntity() != owner || !ModConfig.aggressiveAnimals) return false;
+        if (!mob.isAlive() || owner == null || source.getEntity() != owner || !ModConfig.aggressiveAnimals) return false;
         if (tier != LuckyTier.ALPHA && tier != LuckyTier.TITAN) return false;
-        float damage = Math.min((float) (ModConfig.animalAttackDamage * tier.hostileDamage() / 2.0), owner.getHealth() - 1.0F);
+        float damage = Math.min((float) (ModConfig.animalAttackDamage * tier.hostileDamage() / 2.0), (owner.getHealth() - 1.0F) / 1.5F);
         strike(mob, owner, damage, 0.2F, 0.4F);
         return true;
     }

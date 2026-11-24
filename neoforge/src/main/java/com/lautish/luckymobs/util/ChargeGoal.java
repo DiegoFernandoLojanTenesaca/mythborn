@@ -26,7 +26,8 @@ public class ChargeGoal extends Goal {
 
     @Override
     public boolean canContinueToUse() {
-        return !hit && ticks < 60 && LuckyCombat.active(mob) && LuckyCombat.canTarget(mob, mob.getTarget());
+        LivingEntity target = mob.getTarget();
+        return !hit && ticks < 60 && LuckyCombat.active(mob) && LuckyCombat.canTarget(mob, target) && mob.distanceToSqr(target) < 1024.0;
     }
 
     @Override
@@ -49,11 +50,12 @@ public class ChargeGoal extends Goal {
     @Override
     public void tick() {
         LivingEntity target = mob.getTarget();
+        if (target == null) return;
         ticks++;
         mob.getLookControl().setLookAt(target, 30.0F, 30.0F);
         if (ticks % 4 == 1) mob.getNavigation().moveTo(target, 1.6);
         double reach = mob.getBbWidth() / 2 + target.getBbWidth() / 2 + 1.0;
-        if (mob.isWithinMeleeAttackRange(target) || mob.distanceToSqr(target) < reach * reach) {
+        if ((mob.isWithinMeleeAttackRange(target) || mob.distanceToSqr(target) < reach * reach) && mob.getSensing().hasLineOfSight(target)) {
             LuckyCombat.hit(mob, target, 0.35F, 1.2F);
             hit = true;
         }

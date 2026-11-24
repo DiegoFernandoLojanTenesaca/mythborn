@@ -19,7 +19,7 @@ public class KickGoal extends Goal {
     public boolean canUse() {
         if (cooldown > 0) cooldown--;
         LivingEntity target = mob.getTarget();
-        return cooldown <= 0 && LuckyCombat.active(mob) && LuckyCombat.canTarget(mob, target) && mob.isWithinMeleeAttackRange(target);
+        return cooldown <= 0 && LuckyCombat.active(mob) && LuckyCombat.canTarget(mob, target) && mob.isWithinMeleeAttackRange(target) && mob.getSensing().hasLineOfSight(target);
     }
 
     @Override
@@ -30,6 +30,7 @@ public class KickGoal extends Goal {
     @Override
     public void start() {
         LivingEntity target = mob.getTarget();
+        if (target == null) return;
         mob.getLookControl().setLookAt(target, 30.0F, 30.0F);
         LuckyCombat.hit(mob, target, 0.5F, 0.4F);
         cooldown = 30;

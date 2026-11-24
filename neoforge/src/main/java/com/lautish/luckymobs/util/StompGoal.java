@@ -6,7 +6,6 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.EnumSet;
@@ -42,6 +41,10 @@ public class StompGoal extends Goal {
         ticks = 0;
         landed = false;
         LivingEntity target = mob.getTarget();
+        if (target == null) {
+            landed = true;
+            return;
+        }
         Vec3 dir = new Vec3(target.getX() - mob.getX(), 0.0, target.getZ() - mob.getZ()).normalize().scale(0.5);
         mob.getNavigation().stop();
         mob.setDeltaMovement(dir.x, 0.9, dir.z);
@@ -58,7 +61,7 @@ public class StompGoal extends Goal {
         if (ticks > 4 && mob.onGround() && mob.level() instanceof ServerLevel level) {
             landed = true;
             for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, mob.getBoundingBox().inflate(RADIUS, 1.0, RADIUS))) {
-                if (e != mob && e.distanceToSqr(mob) <= RADIUS * RADIUS && (e instanceof Player || e == mob.getTarget()) && LuckyCombat.canTarget(mob, e)) {
+                if (e != mob && e.distanceToSqr(mob) <= RADIUS * RADIUS && LuckyCombat.canStomp(mob, e)) {
                     LuckyCombat.hit(mob, e, 0.5F, 1.0F);
                 }
             }
