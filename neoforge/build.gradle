@@ -2,6 +2,7 @@ plugins {
     id 'idea'
     id 'java-library'
     id 'net.neoforged.moddev' version '2.0.147'
+    id 'me.modmuss50.mod-publish-plugin' version '0.6.3'
 }
 
 version = "${version}-neoforge"
@@ -60,4 +61,31 @@ processResources {
     }
     from project(":common").sourceSets.main.resources
     exclude '**/data/fabric/**', '**/data/forge/**'
+}
+
+publishMods {
+    file = jar.archiveFile
+    displayName = "${mod_name} ${project.version}"
+    type = STABLE
+    modLoaders.addAll("neoforge")
+    changelog = rootProject.publishNotes
+    dryRun = rootProject.publishDryRun
+    def gameVersions = ["26.3"]
+
+    curseforge {
+        accessToken = System.getenv("CURSEFORGE_TOKEN")
+        minecraftVersions.addAll(gameVersions)
+        serverRequired = true
+    }
+
+    modrinth {
+        accessToken = System.getenv("MODRINTH_TOKEN")
+        minecraftVersions.addAll(gameVersions)
+    }
+}
+
+["publishCurseforge", "publishModrinth", "publishMods"].each { task ->
+    tasks.named(task) {
+        mustRunAfter(":forge:$task")
+    }
 }
