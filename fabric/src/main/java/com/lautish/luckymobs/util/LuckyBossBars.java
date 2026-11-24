@@ -9,7 +9,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobCategory;
-import net.minecraft.world.entity.animal.Animal;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -18,12 +17,7 @@ import java.util.Set;
 import java.util.UUID;
 
 public class LuckyBossBars {
-    private record Bar(ServerLevel level, ServerBossEvent event) {
-    }
-
-    private static final Map<UUID, Bar> BARS = new HashMap<>();
-
-    public static void tick(ServerLevel level) {
+    public static void tick(ServerLevel level, Map<UUID, ServerBossEvent> bars) {
         if (level.getGameTime() % 5 != 0) return;
         Map<UUID, Set<ServerPlayer>> near = new HashMap<>();
         Map<UUID, Mob> mobs = new HashMap<>();
@@ -36,15 +30,15 @@ public class LuckyBossBars {
                 }
             }
         }
-        BARS.values().removeIf(bar -> {
-            if (bar.level != level || mobs.containsKey(bar.event.getId())) return false;
-            bar.event.removeAllPlayers();
+        bars.values().removeIf(bar -> {
+            if (mobs.containsKey(bar.getId())) return false;
+            bar.removeAllPlayers();
             return true;
         });
         mobs.forEach((id, mob) -> {
-            ServerBossEvent event = BARS.computeIfAbsent(id, k -> new Bar(level, new ServerBossEvent(id,
+            ServerBossEvent event = bars.computeIfAbsent(id, k -> new ServerBossEvent(id,
                     Component.translatableWithFallback("luckymobs.name.titan", "Titan %s", mob.getType().getDescription()),
-                    BossEvent.BossBarColor.RED, BossEvent.BossBarOverlay.PROGRESS))).event;
+                    BossEvent.BossBarColor.RED, BossEvent.BossBarOverlay.PROGRESS));
             event.setProgress(Mth.clamp(mob.getHealth() / mob.getMaxHealth(), 0.0F, 1.0F));
             Set<ServerPlayer> in = near.get(id);
             for (ServerPlayer p : Set.copyOf(event.getPlayers())) if (!in.contains(p)) event.removePlayer(p);
@@ -55,6 +49,6 @@ public class LuckyBossBars {
     private static boolean qualifies(Mob mob) {
         if (!mob.isAlive() || LuckyTiers.tierOf(mob) != LuckyTier.TITAN) return false;
         if (mob.getType().getCategory() == MobCategory.MONSTER) return true;
-        return mob instanceof Animal && ModConfig.aggressiveAnimals && !mob.isBaby() && !LuckyCombat.tamed(mob);
+        return LuckyCombat.active(mob) && !LuckyCombat.tamed(mob);
     }
 }
