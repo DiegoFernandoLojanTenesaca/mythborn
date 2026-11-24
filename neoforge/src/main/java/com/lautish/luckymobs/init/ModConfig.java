@@ -33,11 +33,11 @@ public class ModConfig extends TXFConfig {
     public static boolean fromSpawnEggs = false;
     @Entry
     public static boolean fromCommands = false;
-    @Entry
+    @Entry(syncServer = true)
     public static LuckyStyle luckyStyle = LuckyStyle.GOLDEN;
-    @Entry
+    @Entry(syncServer = true)
     public static LuckyStyle alphaStyle = LuckyStyle.SOUL;
-    @Entry
+    @Entry(syncServer = true)
     public static LuckyStyle titanStyle = LuckyStyle.EMBERS;
     @Entry(min = 1.0, max = 10.0)
     public static double luckyHostileHealth = 2.0;
