@@ -2,6 +2,7 @@ package com.lautish.luckymobs.init.mixin;
 
 import com.lautish.luckymobs.init.ModConfig;
 import com.lautish.luckymobs.util.LuckyCombat;
+import com.lautish.luckymobs.util.LuckyEffects;
 import com.lautish.luckymobs.util.LuckyTier;
 import com.lautish.luckymobs.util.LuckyTiers;
 import net.minecraft.server.level.ServerLevel;
@@ -30,6 +31,12 @@ public abstract class LivingEntityMixin {
 
     @Shadow
     protected abstract void dropFromLootTable(ServerLevel level, DamageSource source, boolean playerKilled);
+
+    @Inject(method = "tick", at = @At("TAIL"))
+    private void effects(CallbackInfo ci) {
+        LivingEntity self = (LivingEntity) (Object) this;
+        if (self.level() instanceof ServerLevel level && self.tickCount % 2 == 0) LuckyEffects.tick(level, self);
+    }
 
     @Inject(method = "dropAllDeathLoot", at = @At("HEAD"))
     private void burst(ServerLevel level, DamageSource source, CallbackInfo ci) {

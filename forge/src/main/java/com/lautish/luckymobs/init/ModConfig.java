@@ -105,4 +105,12 @@ public class ModConfig extends TXFConfig {
     public static boolean bossBar = true;
     @Entry
     public static boolean glowingOutline = false;
+    @Entry
+    public static boolean veil = true;
+    @Entry(min = 0.0, max = 2.0)
+    public static double veilStrength = 1.0;
+    @Entry(min = 0, max = 15)
+    public static int glowLight = 9;
+    @Entry
+    public static boolean showName = true;
 }

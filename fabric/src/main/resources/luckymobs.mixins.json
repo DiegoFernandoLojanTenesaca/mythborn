@@ -14,7 +14,13 @@
     "CubeMobMixin",
     "ServerLevelMixin",
     "TamableAnimalMixin",
-    "AbstractHorseMixin"
+    "AbstractHorseMixin",
+    "EntityMixin"
+  ],
+  "client": [
+    "EntityRendererMixin",
+    "LivingEntityRendererMixin",
+    "LivingEntityRenderStateMixin"
   ],
   "injectors": {
     "defaultRequire": 1

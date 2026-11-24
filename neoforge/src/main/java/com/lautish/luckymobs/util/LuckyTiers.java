@@ -3,8 +3,6 @@ package com.lautish.luckymobs.util;
 import com.lautish.luckymobs.init.ModConfig;
 import com.lautish.luckymobs.init.ModTags;
 import net.minecraft.core.Holder;
-import net.minecraft.core.particles.ColorParticleOption;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -31,7 +29,8 @@ public class LuckyTiers {
     private static final String[] EFFECTS = {"health", "speed", "knockback", "mount_speed", "mount_jump"};
     private static final List<Holder<Attribute>> ATTRIBUTES = List.of(Attributes.MAX_HEALTH, Attributes.MOVEMENT_SPEED, Attributes.KNOCKBACK_RESISTANCE, Attributes.JUMP_STRENGTH);
 
-    public static @Nullable LuckyTier tierOf(LivingEntity e) {
+    public static @Nullable LuckyTier tierOf(Entity entity) {
+        if (!(entity instanceof LivingEntity e)) return null;
         AttributeInstance scale = e.getAttribute(Attributes.SCALE);
         if (scale == null) return null;
         for (LuckyTier tier : ROLL_ORDER) {
@@ -77,9 +76,8 @@ public class LuckyTiers {
     public static void rewardBurst(ServerLevel level, LivingEntity e) {
         LuckyTier tier = tierOf(e);
         if (tier == null) return;
-        double w = e.getBbWidth();
-        level.sendParticles(ColorParticleOption.create(ParticleTypes.ENTITY_EFFECT, 0xFF000000 | tier.style().color()), e.getX(), e.getY() + e.getBbHeight() / 2, e.getZ(), 40, w / 2, e.getBbHeight() / 3, w / 2, 0.1);
-        e.playSound(SoundEvents.PLAYER_LEVELUP, 1.0F, 1.0F);
+        LuckyEffects.burst(level, e, tier);
+        level.playSound(null, e.getX(), e.getY(), e.getZ(), SoundEvents.PLAYER_LEVELUP, e.getSoundSource(), 1.0F, 1.0F);
     }
 
     public static void clear(LivingEntity e) {

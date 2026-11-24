@@ -1,7 +1,9 @@
 package com.lautish.luckymobs.util;
 
 import com.lautish.luckymobs.init.ModConfig;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.storage.loot.LootTable;
@@ -128,6 +130,23 @@ public enum LuckyTier {
             case ALPHA -> ModConfig.alphaStyle;
             case TITAN -> ModConfig.titanStyle;
         };
+    }
+
+    public ChatFormatting formatting() {
+        return switch (this) {
+            case LUCKY -> ChatFormatting.GOLD;
+            case ALPHA -> ChatFormatting.AQUA;
+            case TITAN -> ChatFormatting.RED;
+        };
+    }
+
+    public Component displayName(Component typeName) {
+        String word = switch (this) {
+            case LUCKY -> "Lucky";
+            case ALPHA -> "Alpha";
+            case TITAN -> "Titan";
+        };
+        return Component.translatableWithFallback("luckymobs.name." + id.getPath(), word + " %s", typeName).withStyle(formatting());
     }
 
     public @Nullable LuckyTier lower() {
