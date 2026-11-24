@@ -21,7 +21,7 @@
   "luckymobs.config.excludedMobs": "Mobs excluidos",
   "luckymobs.config.excludedMobs.tooltip": "Ids de entidad que nunca reciben un nivel",
   "luckymobs.config.fromSpawners": "Niveles desde generadores",
-  "luckymobs.config.fromSpawners.tooltip": "También se tira la suerte con mobs de generadores y generadores de prueba",
+  "luckymobs.config.fromSpawners.tooltip": "También se tira la suerte con mobs de generadores y generadores de desafío",
   "luckymobs.config.fromSpawnEggs": "Niveles desde huevos",
   "luckymobs.config.fromSpawnEggs.tooltip": "También se tira la suerte con mobs de huevos y dispensadores",
   "luckymobs.config.fromCommands": "Niveles desde comandos",
@@ -109,5 +109,9 @@
   "luckymobs.name.lucky": "%s de la suerte",
   "luckymobs.name.alpha": "%s alfa",
   "luckymobs.name.titan": "%s titán",
+  "advancements.luckymobs.lucky_day.title": "¡Día de suerte!",
+  "advancements.luckymobs.lucky_day.description": "Mata o domestica a tu primer mob de la suerte, alfa o titán",
+  "advancements.luckymobs.titan_slayer.title": "Matatitanes",
+  "advancements.luckymobs.titan_slayer.description": "Mata a un titán",
   "commands.luckymobs.lucky.success": "Se dio un nivel a %s mobs"
 }

@@ -109,5 +109,9 @@
   "luckymobs.name.lucky": "Lucky %s",
   "luckymobs.name.alpha": "Alpha %s",
   "luckymobs.name.titan": "Titan %s",
+  "advancements.luckymobs.lucky_day.title": "Lucky Day!",
+  "advancements.luckymobs.lucky_day.description": "Kill or tame your first lucky, alpha or titan mob",
+  "advancements.luckymobs.titan_slayer.title": "Titan Slayer",
+  "advancements.luckymobs.titan_slayer.description": "Kill a titan",
   "commands.luckymobs.lucky.success": "Gave a level to %s mobs"
 }
