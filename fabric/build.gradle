@@ -76,6 +76,7 @@ publishMods {
         accessToken = System.getenv("CURSEFORGE_TOKEN")
         minecraftVersions.addAll(gameVersions)
         serverRequired = true
+        optional("critter-armory")
         requires("fabric-api")
     }
 
@@ -83,5 +84,6 @@ publishMods {
         accessToken = System.getenv("MODRINTH_TOKEN")
         minecraftVersions.addAll(gameVersions)
         requires("fabric-api")
+        optional("critter-armory")
     }
 }

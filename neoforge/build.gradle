@@ -76,11 +76,13 @@ publishMods {
         accessToken = System.getenv("CURSEFORGE_TOKEN")
         minecraftVersions.addAll(gameVersions)
         serverRequired = true
+        optional("critter-armory")
     }
 
     modrinth {
         accessToken = System.getenv("MODRINTH_TOKEN")
         minecraftVersions.addAll(gameVersions)
+        optional("critter-armory")
     }
 }
 
