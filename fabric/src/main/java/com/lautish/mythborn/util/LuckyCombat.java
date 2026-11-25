@@ -90,6 +90,11 @@ public class LuckyCombat {
         strike(attacker, target, (float) attacker.getAttributeValue(Attributes.ATTACK_DAMAGE), knockUp, knockBack);
     }
 
+    public static void warn(Mob mob, LivingEntity target) {
+        if (!canFight(mob, LuckyTiers.tierOf(mob))) return;
+        strike(mob, target, (float) (mob.getAttributeValue(Attributes.ATTACK_DAMAGE) / 4.0), 0.2F, 0.4F);
+    }
+
     public static boolean strike(Mob attacker, LivingEntity target, float damage, float knockUp, float knockBack) {
         if (!(attacker.level() instanceof ServerLevel level) || damage <= 0.0F) return false;
         DamageSource source = level.damageSources().mobAttack(attacker);

@@ -25,6 +25,8 @@ import java.util.List;
 public class LuckyTiers {
     private static final LuckyTier[] ROLL_ORDER = {LuckyTier.TITAN, LuckyTier.ALPHA, LuckyTier.LUCKY};
 
+    private static final double HOSTILE_SPEED_CAP = 0.3;
+
     private static final String[] EFFECTS = {"health", "speed", "knockback", "damage", "attack_knockback", "fall", "mount_speed", "mount_jump", "mount_fall"};
     private static final List<Holder<Attribute>> ATTRIBUTES = List.of(Attributes.MAX_HEALTH, Attributes.MOVEMENT_SPEED, Attributes.KNOCKBACK_RESISTANCE, Attributes.ATTACK_DAMAGE, Attributes.ATTACK_KNOCKBACK, Attributes.FALL_DAMAGE_MULTIPLIER, Attributes.JUMP_STRENGTH, Attributes.SAFE_FALL_DISTANCE);
 
@@ -46,7 +48,7 @@ public class LuckyTiers {
         health(mob, tier);
         if (tier == LuckyTier.TITAN) multiply(mob, Attributes.FALL_DAMAGE_MULTIPLIER, tier, "fall", 0.0);
         if (mob.getType().getCategory() == MobCategory.MONSTER) {
-            multiply(mob, Attributes.MOVEMENT_SPEED, tier, "speed", tier.hostileSpeed());
+            speed(mob, tier);
             multiply(mob, Attributes.ATTACK_DAMAGE, tier, "damage", tier.hostileDamage());
             add(mob, Attributes.KNOCKBACK_RESISTANCE, tier, "knockback", tier.knockbackResistance(), AttributeModifier.Operation.ADD_VALUE);
         }
@@ -62,6 +64,12 @@ public class LuckyTiers {
         mob.setHealth(mob.getMaxHealth());
         LuckyCombat.addGoals(mob, tier);
         LuckyCombat.armor(mob, tier);
+    }
+
+    private static void speed(Mob mob, LuckyTier tier) {
+        double base = mob.getAttributeBaseValue(Attributes.MOVEMENT_SPEED);
+        double target = Math.max(base, Math.min(base * tier.hostileSpeed(), HOSTILE_SPEED_CAP));
+        add(mob, Attributes.MOVEMENT_SPEED, tier, "speed", target - base, AttributeModifier.Operation.ADD_VALUE);
     }
 
     private static void health(Mob mob, LuckyTier tier) {

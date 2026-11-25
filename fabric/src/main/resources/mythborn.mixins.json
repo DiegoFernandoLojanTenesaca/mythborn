@@ -15,7 +15,11 @@
     "ServerLevelMixin",
     "TamableAnimalMixin",
     "AbstractHorseMixin",
-    "EntityMixin"
+    "EntityMixin",
+    "TamingMixin",
+    "TamingInteractMixin",
+    "MaxTemperMixin",
+    "RunAroundLikeCrazyGoalMixin"
   ],
   "client": [
     "EntityRendererMixin",

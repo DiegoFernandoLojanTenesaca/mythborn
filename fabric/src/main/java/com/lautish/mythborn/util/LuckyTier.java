@@ -84,6 +84,14 @@ public enum LuckyTier {
         };
     }
 
+    public int tameDifficulty() {
+        return switch (this) {
+            case LUCKY -> 2;
+            case ALPHA -> 3;
+            case TITAN -> 4;
+        };
+    }
+
     public double blastRadius() {
         return switch (this) {
             case LUCKY -> 1.25;
