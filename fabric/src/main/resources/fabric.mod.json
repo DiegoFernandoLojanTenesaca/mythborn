@@ -16,7 +16,7 @@
 	"environment": "${side}",
 	"entrypoints": {
 		"main": [
-			"com.lautish.luckymobs.LuckyMobsMod"
+			"com.lautish.alphamobs.AlphaMobsMod"
 		]
 	},
 	"mixins": [

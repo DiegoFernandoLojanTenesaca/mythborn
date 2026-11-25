@@ -1,11 +1,11 @@
-<p align="center"><img src="common/src/main/resources/logo.png" width="170" alt="Lucky Mobs logo"></p>
+<p align="center"><img src="common/src/main/resources/logo.png" width="170" alt="Alpha Mobs logo"></p>
 
-<h1 align="center">Lucky Mobs</h1>
+<h1 align="center">Alpha Mobs</h1>
 
 <p align="center">Rare lucky, alpha and titan mobs: bigger, glowing, tougher and full of loot</p>
 
 <p align="center">
-  <a href="https://modrinth.com/mod/lucky-mobs"><img src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/available/modrinth_vector.svg" height="40" alt="Available on Modrinth"></a>
+  <a href="https://modrinth.com/mod/alpha-mobs"><img src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/available/modrinth_vector.svg" height="40" alt="Available on Modrinth"></a>
   <img src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/supported/fabric_vector.svg" height="40" alt="Fabric">
   <img src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/supported/quilt_vector.svg" height="40" alt="Quilt">
   <img src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/supported/forge_vector.svg" height="40" alt="Forge">
