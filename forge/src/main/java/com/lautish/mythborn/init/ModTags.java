@@ -13,6 +13,7 @@ public class ModTags {
         TagKey<EntityType<?>> CAN_BE_LUCKY = create("can_be_lucky");
         TagKey<EntityType<?>> CANNOT_BE_LUCKY = create("cannot_be_lucky");
         TagKey<EntityType<?>> LUCKY_MOUNTS = create("lucky_mounts");
+        TagKey<EntityType<?>> BOSSES = convention("bosses");
 
         private static TagKey<EntityType<?>> create(String name) {
             return TagKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(MODID, name));

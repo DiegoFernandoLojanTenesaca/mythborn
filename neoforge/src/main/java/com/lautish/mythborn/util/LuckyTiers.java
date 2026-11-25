@@ -138,8 +138,8 @@ public class LuckyTiers {
 
     private static boolean allowed(EntitySpawnReason reason) {
         return switch (reason) {
-            case NATURAL, CHUNK_GENERATION, STRUCTURE, PATROL -> true;
-            default -> false;
+            case BREEDING, CONVERSION, LOAD, DIMENSION_TRAVEL -> false;
+            default -> true;
         };
     }
 }

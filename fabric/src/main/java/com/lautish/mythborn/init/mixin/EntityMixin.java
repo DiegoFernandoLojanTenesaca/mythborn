@@ -1,12 +1,15 @@
 package com.lautish.mythborn.init.mixin;
 
+import com.lautish.mythborn.init.ModTags;
 import com.lautish.mythborn.util.LuckyEffects;
 import com.lautish.mythborn.util.LuckyTier;
 import com.lautish.mythborn.util.LuckyTiers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.spongepowered.asm.mixin.Mixin;
@@ -17,6 +20,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Entity.class)
 public abstract class EntityMixin {
+    public boolean is(TagKey<EntityType<?>> tag) {
+        Entity self = (Entity) (Object) this;
+        return (ModTags.EntityTypes.BOSSES.equals(tag) && LuckyTiers.tierOf(self) == LuckyTier.TITAN) || self.typeHolder().is(tag);
+    }
+
     @Inject(method = "getName", at = @At("RETURN"), cancellable = true)
     private void tierName(CallbackInfoReturnable<Component> cir) {
         Entity self = (Entity) (Object) this;
