@@ -12,6 +12,7 @@ import java.util.EnumSet;
 
 public class StompGoal extends Goal {
     private static final double RADIUS = 4.0;
+    private static final double SLAM_SPEED = 0.6;
     private final Mob mob;
     private int cooldown;
     private int ticks;
@@ -56,8 +57,15 @@ public class StompGoal extends Goal {
     }
 
     @Override
+    public boolean requiresUpdateEveryTick() {
+        return true;
+    }
+
+    @Override
     public void tick() {
         ticks++;
+        Vec3 movement = mob.getDeltaMovement();
+        if (!mob.onGround() && movement.y <= 0.0) mob.setDeltaMovement(movement.x, Math.min(movement.y, -SLAM_SPEED), movement.z);
         if (ticks > 4 && mob.onGround() && mob.level() instanceof ServerLevel level) {
             landed = true;
             for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, mob.getBoundingBox().inflate(RADIUS, 1.0, RADIUS))) {
