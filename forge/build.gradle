@@ -99,6 +99,7 @@ publishMods {
 
     curseforge {
         accessToken = System.getenv("CURSEFORGE_TOKEN")
+        projectId = "1829675"
         minecraftVersions.addAll(gameVersions)
         serverRequired = true
         optional("critter-armory")

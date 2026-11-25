@@ -6,6 +6,7 @@
 
 <p align="center">
   <a href="https://modrinth.com/mod/alpha-mobs"><img src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/available/modrinth_vector.svg" height="40" alt="Available on Modrinth"></a>
+  <a href="https://www.curseforge.com/projects/1829675"><img src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/available/curseforge_vector.svg" height="40" alt="Available on CurseForge"></a>
   <img src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/supported/fabric_vector.svg" height="40" alt="Fabric">
   <img src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/supported/quilt_vector.svg" height="40" alt="Quilt">
   <img src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/supported/forge_vector.svg" height="40" alt="Forge">
