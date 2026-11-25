@@ -5,7 +5,6 @@ import com.lautish.mythborn.util.LuckyEffects;
 import com.lautish.mythborn.util.LuckyTier;
 import com.lautish.mythborn.util.LuckyTiers;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -61,13 +60,19 @@ public abstract class LivingEntityMixin {
     }
 
     @ModifyVariable(method = "hurtServer", at = @At("HEAD"), argsOnly = true)
-    private float multiplyDamage(float dmg, ServerLevel level, DamageSource source) {
-        return (float) (dmg * LuckyTiers.damageMultiplier(source.getEntity()));
+    private float multiplyIndirectDamage(float dmg, ServerLevel level, DamageSource source) {
+        return (float) (dmg * LuckyTiers.indirectDamageMultiplier(source));
     }
 
-    @Inject(method = "hurtServer", at = @At("HEAD"), cancellable = true)
-    private void titanFalls(ServerLevel level, DamageSource source, float dmg, CallbackInfoReturnable<Boolean> cir) {
-        if (source.is(DamageTypeTags.IS_FALL) && LuckyTiers.tierOf((LivingEntity) (Object) this) == LuckyTier.TITAN) cir.setReturnValue(false);
+    @Inject(method = "getVoicePitch", at = @At("RETURN"), cancellable = true)
+    private void deepVoice(CallbackInfoReturnable<Float> cir) {
+        LuckyTier tier = LuckyTiers.tierOf((LivingEntity) (Object) this);
+        if (tier != null) cir.setReturnValue((float) (cir.getReturnValueF() / Math.sqrt(tier.size())));
+    }
+
+    @Inject(method = "getSoundVolume", at = @At("RETURN"), cancellable = true)
+    private void titanVolume(CallbackInfoReturnable<Float> cir) {
+        if (LuckyTiers.tierOf((LivingEntity) (Object) this) == LuckyTier.TITAN) cir.setReturnValue(cir.getReturnValueF() * 1.25F);
     }
 
     @Inject(method = "hurtServer", at = @At("RETURN"))

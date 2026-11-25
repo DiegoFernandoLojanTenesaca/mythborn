@@ -4,6 +4,7 @@ import com.lautish.mythborn.init.ModTags;
 import net.minecraft.core.Holder;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.util.RandomSource;
@@ -24,8 +25,8 @@ import java.util.List;
 public class LuckyTiers {
     private static final LuckyTier[] ROLL_ORDER = {LuckyTier.TITAN, LuckyTier.ALPHA, LuckyTier.LUCKY};
 
-    private static final String[] EFFECTS = {"health", "speed", "knockback", "mount_speed", "mount_jump", "mount_fall"};
-    private static final List<Holder<Attribute>> ATTRIBUTES = List.of(Attributes.MAX_HEALTH, Attributes.MOVEMENT_SPEED, Attributes.KNOCKBACK_RESISTANCE, Attributes.JUMP_STRENGTH, Attributes.SAFE_FALL_DISTANCE);
+    private static final String[] EFFECTS = {"health", "speed", "knockback", "damage", "attack_knockback", "fall", "mount_speed", "mount_jump", "mount_fall"};
+    private static final List<Holder<Attribute>> ATTRIBUTES = List.of(Attributes.MAX_HEALTH, Attributes.MOVEMENT_SPEED, Attributes.KNOCKBACK_RESISTANCE, Attributes.ATTACK_DAMAGE, Attributes.ATTACK_KNOCKBACK, Attributes.FALL_DAMAGE_MULTIPLIER, Attributes.JUMP_STRENGTH, Attributes.SAFE_FALL_DISTANCE);
 
     public static @Nullable LuckyTier tierOf(Entity entity) {
         if (!(entity instanceof LivingEntity e)) return null;
@@ -42,10 +43,16 @@ public class LuckyTiers {
         AttributeInstance scale = mob.getAttribute(Attributes.SCALE);
         if (scale == null) return;
         scale.addPermanentModifier(new AttributeModifier(tier.id(), tier.size() - 1.0, AttributeModifier.Operation.ADD_VALUE));
+        health(mob, tier);
+        if (tier == LuckyTier.TITAN) multiply(mob, Attributes.FALL_DAMAGE_MULTIPLIER, tier, "fall", 0.0);
         if (mob.getType().getCategory() == MobCategory.MONSTER) {
-            multiply(mob, Attributes.MAX_HEALTH, tier, "health", tier.hostileHealth());
             multiply(mob, Attributes.MOVEMENT_SPEED, tier, "speed", tier.hostileSpeed());
+            multiply(mob, Attributes.ATTACK_DAMAGE, tier, "damage", tier.hostileDamage());
             add(mob, Attributes.KNOCKBACK_RESISTANCE, tier, "knockback", tier.knockbackResistance(), AttributeModifier.Operation.ADD_VALUE);
+        }
+        if (LuckyCombat.canFight(mob, tier)) {
+            add(mob, Attributes.ATTACK_DAMAGE, tier, "damage", LuckyCombat.ANIMAL_DAMAGE * tier.hostileDamage(), AttributeModifier.Operation.ADD_VALUE);
+            add(mob, Attributes.ATTACK_KNOCKBACK, tier, "attack_knockback", LuckyCombat.ANIMAL_KNOCKBACK, AttributeModifier.Operation.ADD_VALUE);
         }
         if (mob.is(ModTags.EntityTypes.LUCKY_MOUNTS)) {
             multiply(mob, Attributes.MOVEMENT_SPEED, tier, "mount_speed", tier.mountSpeed());
@@ -57,6 +64,12 @@ public class LuckyTiers {
         LuckyCombat.armor(mob, tier);
     }
 
+    private static void health(Mob mob, LuckyTier tier) {
+        double base = mob.getAttributeBaseValue(Attributes.MAX_HEALTH);
+        double scaled = mob.getType().getCategory() == MobCategory.MONSTER ? base * tier.hostileHealth() : base;
+        add(mob, Attributes.MAX_HEALTH, tier, "health", Math.max(scaled, tier.minHealth()) - base, AttributeModifier.Operation.ADD_VALUE);
+    }
+
     private static void multiply(Mob mob, Holder<Attribute> attribute, LuckyTier tier, String effect, double factor) {
         add(mob, attribute, tier, effect, factor - 1.0, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
     }
@@ -66,8 +79,9 @@ public class LuckyTiers {
         if (instance != null && amount != 0.0) instance.addPermanentModifier(new AttributeModifier(tier.modifierId(effect), amount, operation));
     }
 
-    public static double damageMultiplier(@Nullable Entity attacker) {
-        if (!(attacker instanceof LivingEntity living) || living.getType().getCategory() != MobCategory.MONSTER) return 1.0;
+    public static double indirectDamageMultiplier(DamageSource source) {
+        if (source.getDirectEntity() == source.getEntity()) return 1.0;
+        if (!(source.getEntity() instanceof LivingEntity living) || living.getType().getCategory() != MobCategory.MONSTER) return 1.0;
         LuckyTier tier = tierOf(living);
         return tier == null ? 1.0 : tier.hostileDamage();
     }

@@ -1,6 +1,7 @@
 package com.lautish.mythborn.util;
 
 import com.lautish.mythborn.init.ModConfig;
+import com.lautish.mythborn.init.ModTags;
 import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -17,13 +18,18 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.OwnableEntity;
+import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.TamableAnimal;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.PanicGoal;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -32,22 +38,27 @@ import java.util.List;
 import static com.lautish.mythborn.MythbornMod.MODID;
 
 public class LuckyCombat {
-    private static final double ANIMAL_DAMAGE = 4.0;
+    public static final double ANIMAL_DAMAGE = 4.0;
+    public static final double ANIMAL_KNOCKBACK = 1.0;
 
     public static final int RETALIATE_COOLDOWN = 200;
 
     public static void addGoals(Mob mob, @Nullable LuckyTier tier) {
-        if (!passiveKind(mob) || (tier != LuckyTier.ALPHA && tier != LuckyTier.TITAN)) return;
+        if (!canFight(mob, tier)) return;
         if (mob.getGoalSelector().getAvailableGoals().stream().anyMatch(w -> w.getGoal() instanceof PickGoal)) return;
         mob.removeAllGoals(g -> g instanceof PanicGoal);
         mob.getGoalSelector().addGoal(0, new PickGoal(mob));
-        mob.getGoalSelector().addGoal(1, new KickGoal(mob));
         mob.getGoalSelector().addGoal(1, new StompGoal(mob));
         mob.getGoalSelector().addGoal(2, new ChargeGoal(mob));
+        mob.getGoalSelector().addGoal(3, new MeleeAttackGoal((PathfinderMob) mob, 1.2, true));
     }
 
     public static boolean passiveKind(Mob mob) {
-        return mob instanceof Animal && !(mob instanceof Enemy) && mob.getType().getCategory() != MobCategory.MONSTER;
+        return mob instanceof Animal && !(mob instanceof Enemy) && mob.getType().getCategory() != MobCategory.MONSTER && mob.getBrain().isBrainDead();
+    }
+
+    public static boolean canFight(Mob mob, @Nullable LuckyTier tier) {
+        return passiveKind(mob) && (tier == LuckyTier.ALPHA || tier == LuckyTier.TITAN);
     }
 
     public static boolean active(Mob mob) {
@@ -76,27 +87,35 @@ public class LuckyCombat {
     }
 
     public static void hit(Mob attacker, LivingEntity target, float knockUp, float knockBack) {
-        LuckyTier tier = LuckyTiers.tierOf(attacker);
-        if (tier != null) strike(attacker, target, (float) (ANIMAL_DAMAGE * tier.hostileDamage()), knockUp, knockBack);
+        strike(attacker, target, (float) attacker.getAttributeValue(Attributes.ATTACK_DAMAGE), knockUp, knockBack);
     }
 
     public static boolean strike(Mob attacker, LivingEntity target, float damage, float knockUp, float knockBack) {
         if (!(attacker.level() instanceof ServerLevel level) || damage <= 0.0F) return false;
         DamageSource source = level.damageSources().mobAttack(attacker);
         if (!target.hurtServer(level, source, damage)) return false;
-        target.knockback(knockBack, attacker.getX() - target.getX(), attacker.getZ() - target.getZ(), source, damage);
-        target.push(0.0, knockUp, 0.0);
+        EnchantmentHelper.doPostAttackEffects(level, target, source);
+        throwTarget(attacker, target, knockUp, knockBack);
+        attacker.setLastHurtMob(target);
         level.sendParticles(ParticleTypes.CRIT, target.getX(), target.getY(0.5), target.getZ(), 8, 0.3, 0.3, 0.3, 0.1);
         attacker.playSound(SoundEvents.PLAYER_ATTACK_KNOCKBACK, 1.0F, 1.0F);
         return true;
+    }
+
+    private static void throwTarget(Mob attacker, LivingEntity target, float knockUp, float knockBack) {
+        double power = attacker.getAttributeValue(Attributes.ATTACK_KNOCKBACK) - target.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE);
+        if (power <= 0.0) return;
+        Vec3 push = new Vec3(target.getX() - attacker.getX(), 0.0, target.getZ() - attacker.getZ()).normalize().scale(power * knockBack);
+        target.push(push.x, power * knockUp, push.z);
+        target.syncVelocity = true;
     }
 
     public static boolean retaliate(Mob mob, DamageSource source, ServerLevel level) {
         LuckyTier tier = LuckyTiers.tierOf(mob);
         LivingEntity owner = ownerOf(mob);
         if (!mob.isAlive() || owner == null || source.getEntity() != owner || !ModConfig.aggressiveAnimals) return false;
-        if (tier != LuckyTier.ALPHA && tier != LuckyTier.TITAN) return false;
-        float damage = Math.min((float) (ANIMAL_DAMAGE * tier.hostileDamage() / 2.0), (owner.getHealth() - 1.0F) / 1.5F);
+        if (!canFight(mob, tier)) return false;
+        float damage = Math.min((float) (mob.getAttributeValue(Attributes.ATTACK_DAMAGE) / 2.0), (owner.getHealth() - 1.0F) / 1.5F);
         strike(mob, owner, damage, 0.2F, 0.4F);
         return true;
     }
@@ -106,13 +125,10 @@ public class LuckyCombat {
         if (chance <= 0 || !mob.getBodyArmorItem().isEmpty() || mob.getRandom().nextInt(100) >= chance) return;
         String species = BuiltInRegistries.ENTITY_TYPE.getKey(mob.getType()).getPath();
         TagKey<Item> tag = TagKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(MODID, "lucky_armor/" + species));
-        List<Item> items = new ArrayList<>();
-        for (Holder<Item> holder : BuiltInRegistries.ITEM.getTagOrEmpty(tag)) items.add(holder.value());
+        List<Holder<Item>> items = new ArrayList<>();
+        for (Holder<Item> holder : BuiltInRegistries.ITEM.getTagOrEmpty(tag)) items.add(holder);
         if (tier == LuckyTier.TITAN) {
-            List<Item> high = items.stream().filter(i -> {
-                String path = BuiltInRegistries.ITEM.getKey(i).getPath();
-                return path.contains("diamond") || path.contains("netherite");
-            }).toList();
+            List<Holder<Item>> high = items.stream().filter(holder -> holder.is(ModTags.Items.HIGH_GRADE_ARMOR)).toList();
             if (!high.isEmpty()) items = new ArrayList<>(high);
         }
         if (items.isEmpty()) return;
@@ -134,17 +150,18 @@ public class LuckyCombat {
             if (!active(mob)) {
                 if (mine) mob.setTarget(null);
                 mine = false;
-                return false;
+            } else {
+                if (current != null && (!canTarget(mob, current) || mob.distanceToSqr(current) > 1024.0)) {
+                    mob.setTarget(null);
+                    current = null;
+                }
+                LivingEntity found = tamed(mob) ? defend() : attack();
+                if (found != null && found != current) {
+                    mob.setTarget(found);
+                    mine = true;
+                }
             }
-            if (current != null && (!canTarget(mob, current) || mob.distanceToSqr(current) > 1024.0)) {
-                mob.setTarget(null);
-                current = null;
-            }
-            LivingEntity found = tamed(mob) ? defend() : attack();
-            if (found != null && found != current) {
-                mob.setTarget(found);
-                mine = true;
-            }
+            mob.setAggressive(mob.getTarget() != null);
             return false;
         }
 
@@ -161,7 +178,7 @@ public class LuckyCombat {
         private @Nullable LivingEntity attack() {
             LivingEntity hurtBy = mob.getLastHurtByMob();
             if (canTarget(mob, hurtBy) && mob.tickCount - mob.getLastHurtByMobTimestamp() < 200) return hurtBy;
-            Player near = mob.level().getNearestPlayer(mob.getX(), mob.getY(), mob.getZ(), 12.0, true);
+            Player near = mob.level().getNearestPlayer(mob.getX(), mob.getY(), mob.getZ(), mob.getAttributeValue(Attributes.FOLLOW_RANGE), true);
             return canTarget(mob, near) ? near : null;
         }
     }

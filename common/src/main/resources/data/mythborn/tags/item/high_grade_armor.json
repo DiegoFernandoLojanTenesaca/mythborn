@@ -1,0 +1,56 @@
+{
+  "values": [
+    "minecraft:diamond_horse_armor",
+    "minecraft:netherite_horse_armor",
+    "minecraft:diamond_nautilus_armor",
+    "minecraft:netherite_nautilus_armor",
+    {
+      "id": "critterarmory:diamond_cat_armor",
+      "required": false
+    },
+    {
+      "id": "critterarmory:netherite_cat_armor",
+      "required": false
+    },
+    {
+      "id": "critterarmory:diamond_chicken_armor",
+      "required": false
+    },
+    {
+      "id": "critterarmory:netherite_chicken_armor",
+      "required": false
+    },
+    {
+      "id": "critterarmory:diamond_cow_armor",
+      "required": false
+    },
+    {
+      "id": "critterarmory:netherite_cow_armor",
+      "required": false
+    },
+    {
+      "id": "critterarmory:diamond_pig_armor",
+      "required": false
+    },
+    {
+      "id": "critterarmory:netherite_pig_armor",
+      "required": false
+    },
+    {
+      "id": "critterarmory:diamond_sheep_armor",
+      "required": false
+    },
+    {
+      "id": "critterarmory:netherite_sheep_armor",
+      "required": false
+    },
+    {
+      "id": "critterarmory:diamond_wolf_armor",
+      "required": false
+    },
+    {
+      "id": "critterarmory:netherite_wolf_armor",
+      "required": false
+    }
+  ]
+}

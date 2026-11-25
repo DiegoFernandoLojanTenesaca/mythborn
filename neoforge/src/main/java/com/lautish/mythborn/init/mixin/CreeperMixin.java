@@ -12,6 +12,6 @@ public abstract class CreeperMixin {
     @ModifyArg(method = "explodeCreeper", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerLevel;explode(Lnet/minecraft/world/entity/Entity;DDDFLnet/minecraft/world/level/Level$ExplosionInteraction;)V"), index = 4)
     private float biggerBlast(float radius) {
         LuckyTier tier = LuckyTiers.tierOf((Creeper) (Object) this);
-        return tier == null ? radius : (float) (radius * Math.min(1.5, tier.size()));
+        return tier == null ? radius : (float) (radius * tier.blastRadius());
     }
 }

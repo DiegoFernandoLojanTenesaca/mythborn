@@ -68,11 +68,27 @@ public enum LuckyTier {
         };
     }
 
+    public double minHealth() {
+        return switch (this) {
+            case LUCKY -> 10.0;
+            case ALPHA -> 20.0;
+            case TITAN -> 40.0;
+        };
+    }
+
     public double hostileDamage() {
         return switch (this) {
             case LUCKY -> 2.0;
             case ALPHA -> 2.5;
             case TITAN -> 3.0;
+        };
+    }
+
+    public double blastRadius() {
+        return switch (this) {
+            case LUCKY -> 1.25;
+            case ALPHA -> 1.5;
+            case TITAN -> 2.0;
         };
     }
 
