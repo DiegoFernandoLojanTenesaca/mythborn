@@ -25,5 +25,8 @@
   "advancements.mythborn.lucky_day.description": "Mata o domestica a tu primer mob de la suerte, alfa o titán",
   "advancements.mythborn.titan_slayer.title": "Matatitanes",
   "advancements.mythborn.titan_slayer.description": "Mata a un titán",
-  "commands.mythborn.lucky.success": "Se dio un nivel a %s mobs"
+  "advancements.mythborn.titan_tamer.title": "Domatitanes",
+  "advancements.mythborn.titan_tamer.description": "Domestica a un titán",
+  "commands.mythborn.lucky.success": "Se dio un nivel a %s mobs",
+  "commands.mythborn.lucky.cleared": "Se quitó el nivel a %s mobs"
 }

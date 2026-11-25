@@ -25,5 +25,8 @@
   "advancements.mythborn.lucky_day.description": "Kill or tame your first lucky, alpha or titan mob",
   "advancements.mythborn.titan_slayer.title": "Titan Slayer",
   "advancements.mythborn.titan_slayer.description": "Kill a titan",
-  "commands.mythborn.lucky.success": "Gave a level to %s mobs"
+  "advancements.mythborn.titan_tamer.title": "Titan Tamer",
+  "advancements.mythborn.titan_tamer.description": "Tame a titan",
+  "commands.mythborn.lucky.success": "Gave a level to %s mobs",
+  "commands.mythborn.lucky.cleared": "Removed the level from %s mobs"
 }

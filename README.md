@@ -15,7 +15,7 @@
 
 <p align="center"><img src="https://cdn.modrinth.com/data/es77oDNl/images/a4db53439e29c5354875e3791a78c9ffb897d917.png" width="820" alt="Lucky, alpha and titan cows at night, next to a normal one"></p>
 
-Any mob can spawn with a level. It grows bigger, glows in the dark, wears a colored veil and leaves a trail of particles, and it drops much more when it dies. The rarer the level, the bigger the reward.
+Any mob can get a level, however it spawns: naturally, from a spawner, from a spawn egg or from a command. It grows bigger, glows in the dark, wears a colored veil and leaves a trail of particles, and it drops much more when it dies. The rarer the level, the bigger the reward.
 
 ## Three levels
 
@@ -26,6 +26,8 @@ Any mob can spawn with a level. It grows bigger, glows in the dark, wears a colo
 | Chance | 1 in 200 | 1 in 1,000 | 1 in 4,000 |
 | Loot | ×2 | ×3 | ×4 |
 | Experience | ×2 | ×3 | ×5 |
+| Least health | 10 | 20 | 40 |
+| Harder to tame | ×2 | ×3 | ×4 |
 | Monster health | ×2 | ×3 | ×4 |
 | Monster damage | ×2 | ×2.5 | ×3 |
 | Monster speed | ×1.3 | ×1.2 | normal |
@@ -38,8 +40,8 @@ The chances are the defaults and can be changed in the mod config.
 
 ## Monsters
 
-- More health, damage and speed, so a lucky skeleton is a real fight
-- Titan monsters show a boss bar with their name and health
+- More health, damage and speed, so a lucky skeleton is a real fight, though none of them outruns a sprinting player
+- Titan monsters show a boss bar with their name and health, and count as bosses for other mods
 
 <p align="center"><img src="https://cdn.modrinth.com/data/es77oDNl/images/b6ebe37757a366508bbb1377fdeb032c7bf8c309.png" width="640" alt="A titan zombie with its boss bar"></p>
 
@@ -53,6 +55,7 @@ The chances are the defaults and can be changed in the mod config.
 
 - Lucky, alpha and titan mounts run faster and jump higher without hurting their rider
 - Titans take no fall damage
+- They are harder to tame the higher the level, and an alpha or titan horse hits you when it throws you off
 
 <p align="center"><img src="https://cdn.modrinth.com/data/es77oDNl/images/73e5433e2444189255514ef848d4c5782fbcc461.png" width="640" alt="Riding an alpha horse"></p>
 
@@ -71,9 +74,10 @@ Five styles to choose for each level: golden, starry, soul, embers and totem.
 
 ## Command and advancements
 
-- `/lucky <targets> [lucky|alpha|titan]` gives a level to any mob (operators only)
+- `/lucky <targets> [lucky|alpha|titan|none]` gives a level to any mob, or takes it away (operators only)
 - <strong>Lucky Day!</strong>: kill or tame your first lucky, alpha or titan mob
 - <strong>Titan Slayer</strong>: kill a titan
+- <strong>Titan Tamer</strong>: tame a titan
 
 ## Multiplayer
 
@@ -81,7 +85,7 @@ Install it on the server and every player sees the bigger mobs and the particles
 
 ## Configuration
 
-The chance and particle style of each level, the aggressive animals, the boss bar and the colored veil can be changed. Bosses from any mod (the `c:bosses` tag), the Elder Guardian, the Warden, villagers and wandering traders never get a level, and mobs from spawners, spawn eggs and `/summon` never roll.
+The chance and particle style of each level, the aggressive animals, the boss bar and the colored veil can be changed. On a server the operator owns everything but the veil, which stays a client choice. Bosses from any mod (the `c:bosses` tag), the Elder Guardian, the Warden, villagers and wandering traders never get a level.
 
 ## Dependencies
 

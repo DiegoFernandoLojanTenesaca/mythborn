@@ -36,8 +36,23 @@ public abstract class CommandsMixin {
         for (LuckyTier tier : LuckyTier.values()) {
             targets.then(Commands.literal(tier.name().toLowerCase(Locale.ROOT)).executes(c -> give(c, tier)));
         }
+        targets.then(Commands.literal("none").executes(CommandsMixin::clear));
         LiteralArgumentBuilder<CommandSourceStack> root = Commands.literal("lucky").requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS));
         dispatcher.register(root.then(targets));
+    }
+
+    @Unique
+    private static int clear(CommandContext<CommandSourceStack> c) throws CommandSyntaxException {
+        int changed = 0;
+        for (Entity entity : EntityArgument.getEntities(c, "targets")) {
+            if (entity instanceof Mob mob && LuckyTiers.tierOf(mob) != null) {
+                LuckyTiers.clear(mob);
+                changed++;
+            }
+        }
+        int count = changed;
+        c.getSource().sendSuccess(() -> Component.translatableWithFallback("commands.mythborn.lucky.cleared", "Removed the level from %s mobs", count), true);
+        return changed;
     }
 
     @Unique

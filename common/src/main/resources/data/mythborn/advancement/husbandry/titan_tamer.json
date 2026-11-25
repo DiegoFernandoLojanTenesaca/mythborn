@@ -1,0 +1,39 @@
+{
+  "parent": "mythborn:husbandry/lucky_day",
+  "display": {
+    "icon": {
+      "id": "minecraft:lead"
+    },
+    "title": {
+      "translate": "advancements.mythborn.titan_tamer.title",
+      "fallback": "Titan Tamer"
+    },
+    "description": {
+      "translate": "advancements.mythborn.titan_tamer.description",
+      "fallback": "Tame a titan"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "tame_titan": {
+      "trigger": "minecraft:tame_animal",
+      "conditions": {
+        "entity": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:nbt": "{attributes:[{id:\"minecraft:scale\",modifiers:[{id:\"mythborn:titan\"}]}]}"
+          }
+        }
+      }
+    }
+  },
+  "requirements": [
+    [
+      "tame_titan"
+    ]
+  ]
+}
