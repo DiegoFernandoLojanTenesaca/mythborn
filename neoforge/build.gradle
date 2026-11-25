@@ -81,6 +81,7 @@ publishMods {
 
     modrinth {
         accessToken = System.getenv("MODRINTH_TOKEN")
+        projectId = "es77oDNl"
         minecraftVersions.addAll(gameVersions)
         optional("critter-armory")
     }

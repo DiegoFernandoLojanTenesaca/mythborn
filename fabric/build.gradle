@@ -82,6 +82,7 @@ publishMods {
 
     modrinth {
         accessToken = System.getenv("MODRINTH_TOKEN")
+        projectId = "es77oDNl"
         minecraftVersions.addAll(gameVersions)
         requires("fabric-api")
         optional("critter-armory")
