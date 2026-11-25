@@ -18,11 +18,20 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import java.util.stream.Stream;
+
 @Mixin(Entity.class)
 public abstract class EntityMixin {
     public boolean is(TagKey<EntityType<?>> tag) {
         Entity self = (Entity) (Object) this;
         return (ModTags.EntityTypes.BOSSES.equals(tag) && LuckyTiers.tierOf(self) == LuckyTier.TITAN) || self.typeHolder().is(tag);
+    }
+
+    public Stream<TagKey<EntityType<?>>> tags() {
+        Entity self = (Entity) (Object) this;
+        Stream<TagKey<EntityType<?>>> tags = self.typeHolder().tags();
+        if (LuckyTiers.tierOf(self) != LuckyTier.TITAN || self.typeHolder().is(ModTags.EntityTypes.BOSSES)) return tags;
+        return Stream.concat(tags, Stream.of(ModTags.EntityTypes.BOSSES));
     }
 
     @Inject(method = "getName", at = @At("RETURN"), cancellable = true)
