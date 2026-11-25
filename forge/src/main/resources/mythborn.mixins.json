@@ -1,0 +1,28 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.lautish.mythborn.init.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "MobMixin",
+    "LivingEntityMixin",
+    "CommandsMixin",
+    "CreeperMixin",
+    "AnimalMixin",
+    "SheepMixin",
+    "ChickenMixin",
+    "CubeMobMixin",
+    "ServerLevelMixin",
+    "TamableAnimalMixin",
+    "AbstractHorseMixin",
+    "EntityMixin"
+  ],
+  "client": [
+    "EntityRendererMixin",
+    "LivingEntityRendererMixin",
+    "LivingEntityRenderStateMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

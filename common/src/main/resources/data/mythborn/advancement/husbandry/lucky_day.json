@@ -1,0 +1,90 @@
+{
+  "parent": "minecraft:husbandry/root",
+  "display": {
+    "icon": {
+      "id": "minecraft:gold_nugget"
+    },
+    "title": {
+      "translate": "advancements.mythborn.lucky_day.title",
+      "fallback": "Lucky Day!"
+    },
+    "description": {
+      "translate": "advancements.mythborn.lucky_day.description",
+      "fallback": "Kill or tame your first lucky, alpha or titan mob"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "kill_leveled": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "minecraft:any_of",
+          "terms": [
+            {
+              "type": "minecraft:entity_properties",
+              "entity": "this",
+              "predicate": {
+                "minecraft:nbt": "{attributes:[{id:\"minecraft:scale\",modifiers:[{id:\"mythborn:lucky\"}]}]}"
+              }
+            },
+            {
+              "type": "minecraft:entity_properties",
+              "entity": "this",
+              "predicate": {
+                "minecraft:nbt": "{attributes:[{id:\"minecraft:scale\",modifiers:[{id:\"mythborn:alpha\"}]}]}"
+              }
+            },
+            {
+              "type": "minecraft:entity_properties",
+              "entity": "this",
+              "predicate": {
+                "minecraft:nbt": "{attributes:[{id:\"minecraft:scale\",modifiers:[{id:\"mythborn:titan\"}]}]}"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "tame_leveled": {
+      "trigger": "minecraft:tame_animal",
+      "conditions": {
+        "entity": {
+          "type": "minecraft:any_of",
+          "terms": [
+            {
+              "type": "minecraft:entity_properties",
+              "entity": "this",
+              "predicate": {
+                "minecraft:nbt": "{attributes:[{id:\"minecraft:scale\",modifiers:[{id:\"mythborn:lucky\"}]}]}"
+              }
+            },
+            {
+              "type": "minecraft:entity_properties",
+              "entity": "this",
+              "predicate": {
+                "minecraft:nbt": "{attributes:[{id:\"minecraft:scale\",modifiers:[{id:\"mythborn:alpha\"}]}]}"
+              }
+            },
+            {
+              "type": "minecraft:entity_properties",
+              "entity": "this",
+              "predicate": {
+                "minecraft:nbt": "{attributes:[{id:\"minecraft:scale\",modifiers:[{id:\"mythborn:titan\"}]}]}"
+              }
+            }
+          ]
+        }
+      }
+    }
+  },
+  "requirements": [
+    [
+      "kill_leveled",
+      "tame_leveled"
+    ]
+  ]
+}
