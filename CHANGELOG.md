@@ -1,6 +1,9 @@
-- Added breeding genetics: babies of two parents with a level always inherit one of them, and two parents of the same level can have a baby one level higher
-- Fixed alpha and titan mobs never despawning, which made them pile up over time
-- Updated bosses from any mod (the c:bosses tag) so they never get a level
-- Updated the chance of each level to one value for all mobs
-- Updated Fabric to be published as a release
-- Removed most config options; the chance and particle style of each level, aggressive animals, the boss bar and the veil remain
+- Added levels on any kind of spawn, so spawners, spawn eggs, dispensers and commands can give them too
+- Added a minimum health for each level, so small mobs like rabbits are a real threat as titans
+- Added resistance to taming for wolves, cats, parrots, horses and llamas with a level, and horses now throw you off with a warning hit
+- Fixed mobs with a level outrunning you, chasing you in bursts and ignoring your knockback resistance
+- Fixed goats, camels, frogs, armadillos, sniffers and axolotls turning aggressive, which fought their own behaviour
+- Fixed creeper blasts being the same size on every level
+- Fixed titans lowering the pitch of every sound they make instead of only their voice
+- Updated titans to count as bosses through the c:bosses tag, so mods that hide boss health bars hide theirs too
+- Updated the damage and speed of mobs with a level to use their attributes, so potions, enchantments and commands affect them
