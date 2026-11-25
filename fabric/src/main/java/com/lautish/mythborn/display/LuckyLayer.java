@@ -1,6 +1,5 @@
 package com.lautish.mythborn.display;
 
-import com.lautish.mythborn.init.ModConfig;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.SubmitNodeCollector;
@@ -30,8 +29,7 @@ public class LuckyLayer<S extends LivingEntityRenderState, M extends EntityModel
         if (veil == -1 || state.isInvisible) return;
         int rgb = veil == RAINBOW ? Mth.hsvToRgb((state.ageInTicks * 0.01F) % 1.0F, 0.75F, 1.0F) : veil;
         float pulse = 0.5F + 0.5F * (float) Math.sin(state.ageInTicks * 0.12F);
-        int alpha = Mth.clamp((int) ((45 + 50 * pulse) * ModConfig.veilStrength), 0, 255);
-        if (alpha == 0) return;
+        int alpha = (int) (45 + 50 * pulse);
         int color = ARGB.color(alpha, (rgb >> 16) & 255, (rgb >> 8) & 255, rgb & 255);
         collector.order(1).submitModel(getParentModel(), state, poseStack, RenderTypes.entityTranslucent(renderer.getTextureLocation(state)), LightCoordsUtil.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, color, null, state.outlineColor);
     }

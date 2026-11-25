@@ -1,6 +1,5 @@
 package com.lautish.mythborn.init.mixin;
 
-import com.lautish.mythborn.init.ModConfig;
 import com.lautish.mythborn.util.LuckyTiers;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -28,14 +27,14 @@ public abstract class EntityRendererMixin<T extends Entity, S extends EntityRend
 
     @Inject(method = "getBlockLightLevel", at = @At("RETURN"), cancellable = true)
     private void glow(T entity, BlockPos pos, CallbackInfoReturnable<Integer> cir) {
-        if (ModConfig.glowLight <= 0 || LuckyTiers.tierOf(entity) == null) return;
+        if (LuckyTiers.tierOf(entity) == null) return;
         int pulse = 9 + (int) (6 * (0.5 + 0.5 * Math.sin(entity.tickCount * 0.12)));
-        cir.setReturnValue(Math.max(cir.getReturnValue(), Math.max(ModConfig.glowLight, pulse)));
+        cir.setReturnValue(Math.max(cir.getReturnValue(), pulse));
     }
 
     @Inject(method = "extractNameTags(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/client/renderer/entity/state/EntityRenderState;FDD)V", at = @At("TAIL"))
     private void showTierName(T entity, S state, float partialTicks, double nameTagDistance, double belowNameDistance, CallbackInfo ci) {
-        if (!ModConfig.showName || state.nameTag != null || entity != entityRenderDispatcher.crosshairPickEntity) return;
+        if (state.nameTag != null || entity != entityRenderDispatcher.crosshairPickEntity) return;
         if (LuckyTiers.tierOf(entity) == null || state.distanceToCameraSq >= nameTagDistance * nameTagDistance) return;
         state.nameTag = getNameTag(entity);
         state.nameTagAttachment = entity.getAttachments().getNullable(EntityAttachment.NAME_TAG, 0, entity.getYRot(partialTicks));

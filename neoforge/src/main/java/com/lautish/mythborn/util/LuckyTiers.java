@@ -1,9 +1,7 @@
 package com.lautish.mythborn.util;
 
-import com.lautish.mythborn.init.ModConfig;
 import com.lautish.mythborn.init.ModTags;
 import net.minecraft.core.Holder;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
@@ -98,16 +96,13 @@ public class LuckyTiers {
     public static boolean eligible(Mob mob) {
         EntityType<?> type = mob.getType();
         if (type.getCategory() == MobCategory.MISC && !mob.is(ModTags.EntityTypes.CAN_BE_LUCKY)) return false;
-        if (mob.is(ModTags.EntityTypes.CANNOT_BE_LUCKY)) return false;
-        return !ModConfig.excludedMobs.contains(BuiltInRegistries.ENTITY_TYPE.getKey(type).toString());
+        return !mob.is(ModTags.EntityTypes.CANNOT_BE_LUCKY);
     }
 
     public static @Nullable LuckyTier roll(Mob mob, EntitySpawnReason reason, RandomSource random) {
         if (!allowed(reason)) return null;
-        boolean hostile = mob.getType().getCategory() == MobCategory.MONSTER;
         for (LuckyTier tier : ROLL_ORDER) {
-            int chance = hostile ? tier.hostileChance() : tier.passiveChance();
-            if (chance > 0 && random.nextInt(chance) == 0) return tier;
+            if (tier.chance() > 0 && random.nextInt(tier.chance()) == 0) return tier;
         }
         return null;
     }
@@ -130,9 +125,6 @@ public class LuckyTiers {
     private static boolean allowed(EntitySpawnReason reason) {
         return switch (reason) {
             case NATURAL, CHUNK_GENERATION, STRUCTURE, PATROL -> true;
-            case SPAWNER, TRIAL_SPAWNER -> ModConfig.fromSpawners;
-            case SPAWN_ITEM_USE, DISPENSER -> ModConfig.fromSpawnEggs;
-            case COMMAND -> ModConfig.fromCommands;
             default -> false;
         };
     }

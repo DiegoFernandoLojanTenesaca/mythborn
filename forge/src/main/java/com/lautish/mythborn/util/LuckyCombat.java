@@ -32,6 +32,8 @@ import java.util.List;
 import static com.lautish.mythborn.MythbornMod.MODID;
 
 public class LuckyCombat {
+    private static final double ANIMAL_DAMAGE = 4.0;
+
     public static final int RETALIATE_COOLDOWN = 200;
 
     public static void addGoals(Mob mob, @Nullable LuckyTier tier) {
@@ -75,7 +77,7 @@ public class LuckyCombat {
 
     public static void hit(Mob attacker, LivingEntity target, float knockUp, float knockBack) {
         LuckyTier tier = LuckyTiers.tierOf(attacker);
-        if (tier != null) strike(attacker, target, (float) (ModConfig.animalAttackDamage * tier.hostileDamage()), knockUp, knockBack);
+        if (tier != null) strike(attacker, target, (float) (ANIMAL_DAMAGE * tier.hostileDamage()), knockUp, knockBack);
     }
 
     public static boolean strike(Mob attacker, LivingEntity target, float damage, float knockUp, float knockBack) {
@@ -94,13 +96,13 @@ public class LuckyCombat {
         LivingEntity owner = ownerOf(mob);
         if (!mob.isAlive() || owner == null || source.getEntity() != owner || !ModConfig.aggressiveAnimals) return false;
         if (tier != LuckyTier.ALPHA && tier != LuckyTier.TITAN) return false;
-        float damage = Math.min((float) (ModConfig.animalAttackDamage * tier.hostileDamage() / 2.0), (owner.getHealth() - 1.0F) / 1.5F);
+        float damage = Math.min((float) (ANIMAL_DAMAGE * tier.hostileDamage() / 2.0), (owner.getHealth() - 1.0F) / 1.5F);
         strike(mob, owner, damage, 0.2F, 0.4F);
         return true;
     }
 
     public static void armor(Mob mob, LuckyTier tier) {
-        int chance = tier == LuckyTier.ALPHA ? ModConfig.armorChanceAlpha : tier == LuckyTier.TITAN ? ModConfig.armorChanceTitan : 0;
+        int chance = tier == LuckyTier.ALPHA ? 25 : tier == LuckyTier.TITAN ? 50 : 0;
         if (chance <= 0 || !mob.getBodyArmorItem().isEmpty() || mob.getRandom().nextInt(100) >= chance) return;
         String species = BuiltInRegistries.ENTITY_TYPE.getKey(mob.getType()).getPath();
         TagKey<Item> tag = TagKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(MODID, "lucky_armor/" + species));
@@ -115,7 +117,7 @@ public class LuckyCombat {
         }
         if (items.isEmpty()) return;
         mob.setItemSlot(EquipmentSlot.BODY, new ItemStack(items.get(mob.getRandom().nextInt(items.size()))));
-        mob.setDropChance(EquipmentSlot.BODY, ModConfig.armorDropChance / 100.0F);
+        mob.setDropChance(EquipmentSlot.BODY, 0.1F);
     }
 
     private static class PickGoal extends Goal {

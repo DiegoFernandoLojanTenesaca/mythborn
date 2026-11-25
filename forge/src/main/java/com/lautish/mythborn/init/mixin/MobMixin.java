@@ -41,12 +41,6 @@ public abstract class MobMixin {
         if (tier == LuckyTier.ALPHA || tier == LuckyTier.TITAN) cir.setReturnValue(false);
     }
 
-    @Inject(method = "requiresCustomPersistence", at = @At("HEAD"), cancellable = true)
-    private void keepLoaded(CallbackInfoReturnable<Boolean> cir) {
-        LuckyTier tier = LuckyTiers.tierOf((Mob) (Object) this);
-        if (tier == LuckyTier.ALPHA || tier == LuckyTier.TITAN) cir.setReturnValue(true);
-    }
-
     @Inject(method = "convertTo(Lnet/minecraft/world/entity/EntityType;Lnet/minecraft/world/entity/ConversionParams;Lnet/minecraft/world/entity/EntitySpawnReason;Lnet/minecraft/world/entity/ConversionParams$AfterConversion;)Lnet/minecraft/world/entity/Mob;", at = @At("RETURN"))
     private void keepTier(EntityType<?> type, ConversionParams params, EntitySpawnReason reason, ConversionParams.AfterConversion<?> after, CallbackInfoReturnable<Mob> cir) {
         Mob result = cir.getReturnValue();

@@ -1,1 +1,6 @@
-- Initial release
+- Added breeding genetics: babies of two parents with a level always inherit one of them, and two parents of the same level can have a baby one level higher
+- Fixed alpha and titan mobs never despawning, which made them pile up over time
+- Updated bosses from any mod (the c:bosses tag) so they never get a level
+- Updated the chance of each level to one value for all mobs
+- Updated Fabric to be published as a release
+- Removed most config options; the chance and particle style of each level, aggressive animals, the boss bar and the veil remain

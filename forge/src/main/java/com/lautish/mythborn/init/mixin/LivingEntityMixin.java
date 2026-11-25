@@ -1,6 +1,5 @@
 package com.lautish.mythborn.init.mixin;
 
-import com.lautish.mythborn.init.ModConfig;
 import com.lautish.mythborn.util.LuckyCombat;
 import com.lautish.mythborn.util.LuckyEffects;
 import com.lautish.mythborn.util.LuckyTier;
@@ -52,7 +51,7 @@ public abstract class LivingEntityMixin {
         for (int i = 1; i < tier.lootRolls(); i++) {
             dropFromLootTable(level, source, playerKilled);
         }
-        if (ModConfig.bonusLoot) self.dropFromLootTable(level, source, playerKilled, tier.bonusTable());
+        self.dropFromLootTable(level, source, playerKilled, tier.bonusTable());
     }
 
     @Inject(method = "getExperienceReward", at = @At("RETURN"), cancellable = true)

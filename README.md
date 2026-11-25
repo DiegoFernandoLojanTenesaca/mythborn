@@ -23,8 +23,7 @@ Any mob can spawn with a level. It grows bigger, glows in the dark, wears a colo
 |:--|:--:|:--:|:--:|
 | Look | Golden sparkles | Blue soul flames | Red embers |
 | Size | ×1.5 | ×2 | ×3 |
-| Chance, monsters | 1 in 150 | 1 in 750 | 1 in 3,000 |
-| Chance, other mobs | 1 in 300 | 1 in 1,500 | 1 in 6,000 |
+| Chance | 1 in 200 | 1 in 1,000 | 1 in 4,000 |
 | Loot | ×2 | ×3 | ×4 |
 | Experience | ×2 | ×3 | ×5 |
 | Monster health | ×2 | ×3 | ×4 |
@@ -35,7 +34,7 @@ Any mob can spawn with a level. It grows bigger, glows in the dark, wears a colo
 | Body armor | | 25% | 50% |
 | Boss bar | | | Monsters and wild animals |
 
-These are the defaults: every value can be changed in the mod config.
+The chances are the defaults and can be changed in the mod config.
 
 ## Monsters
 
@@ -48,7 +47,7 @@ These are the defaults: every value can be changed in the mod config.
 
 - Alpha and titan wild animals charge and kick nearby players, and titans also stomp
 - Wild titans show a boss bar too, and tamed ones defend their owner
-- Babies can inherit luck: 10% if one parent has a level, 50% if both do
+- Babies inherit a level: always if both parents have one, half the time if only one does, and two parents of the same level have a 10% chance of a baby one level higher
 
 ## Mounts
 
@@ -82,7 +81,7 @@ Install it on the server and every player sees the bigger mobs and the particles
 
 ## Configuration
 
-Chances, sizes, stats, loot, particle styles, the veil, the light, the boss bar and the aggressive animals can all be changed. The Ender Dragon, the Wither, the Elder Guardian, the Warden, villagers and wandering traders never get a level, and mobs from spawners, spawn eggs and `/summon` don't roll unless you turn it on.
+The chance and particle style of each level, the aggressive animals, the boss bar and the colored veil can be changed. Bosses from any mod (the `c:bosses` tag), the Elder Guardian, the Warden, villagers and wandering traders never get a level, and mobs from spawners, spawn eggs and `/summon` never roll.
 
 ## Dependencies
 

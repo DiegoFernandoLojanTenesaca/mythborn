@@ -1,6 +1,5 @@
 package com.lautish.mythborn.util;
 
-import com.lautish.mythborn.init.ModConfig;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleOptions;
@@ -8,8 +7,6 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.OwnableEntity;
@@ -30,12 +27,8 @@ public class LuckyEffects {
         if (!(e instanceof Mob mob) || !mob.isAlive()) return;
         LuckyTier tier = LuckyTiers.tierOf(mob);
         if (tier == null) return;
-        if (ModConfig.glowingOutline) {
-            MobEffectInstance glow = mob.getEffect(MobEffects.GLOWING);
-            if (glow == null || glow.getDuration() < 20) mob.addEffect(new MobEffectInstance(MobEffects.GLOWING, 40, 0, false, false));
-        }
-        if (ModConfig.sparkles && level.hasNearbyAlivePlayer(mob.getX(), mob.getY(), mob.getZ(), 48.0)) sparkles(level, mob, tier);
-        if (ModConfig.chime) chime(level, mob);
+        if (level.hasNearbyAlivePlayer(mob.getX(), mob.getY(), mob.getZ(), 48.0)) sparkles(level, mob, tier);
+        chime(level, mob);
     }
 
     private static boolean named(LivingEntity e, String name) {

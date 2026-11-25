@@ -1,3 +1,14 @@
 {
-  "values": []
+  "values": [
+    {
+      "id": "#c:bosses",
+      "required": false
+    },
+    "minecraft:ender_dragon",
+    "minecraft:wither",
+    "minecraft:elder_guardian",
+    "minecraft:warden",
+    "minecraft:villager",
+    "minecraft:wandering_trader"
+  ]
 }
