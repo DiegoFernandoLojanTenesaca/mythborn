@@ -1,9 +1,6 @@
-- Added levels on any kind of spawn, so spawners, spawn eggs, dispensers and commands can give them too
-- Added a minimum health for each level, so small mobs like rabbits are a real threat as titans
-- Added resistance to taming for wolves, cats, parrots, horses and llamas with a level, and horses now throw you off with a warning hit
-- Fixed mobs with a level outrunning you, chasing you in bursts and ignoring your knockback resistance
-- Fixed goats, camels, frogs, armadillos, sniffers and axolotls turning aggressive, which fought their own behaviour
-- Fixed creeper blasts being the same size on every level
-- Fixed titans lowering the pitch of every sound they make instead of only their voice
-- Updated titans to count as bosses through the c:bosses tag, so mods that hide boss health bars hide theirs too
-- Updated the damage and speed of mobs with a level to use their attributes, so potions, enchantments and commands affect them
+- Added `/lucky <targets> none` to take a level away
+- Added the Titan Tamer advancement for taming a titan
+- Fixed the bonus loot tables for the 26.3 format, and bonus drops now need a player kill
+- Fixed titans missing from the tag list other mods read, so they count as bosses everywhere
+- Fixed the stomp so small titans like chickens land it
+- Updated the gameplay options so the server decides them for every player, except the colored veil, which stays a client choice
